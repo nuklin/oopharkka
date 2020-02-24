@@ -13,8 +13,14 @@ public class Kortti {
 	public int annaArvo() {
 		return arvo;
 	}
+	//Ei voi toimia tällä tavalla
 	public String annaNimi() {
 		return nimi;
+	}
+	public void teeJotain() {
+		int x=0;
+		x++;
+		x=x+3;
 	}
 	
 
