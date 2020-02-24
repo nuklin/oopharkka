@@ -28,5 +28,7 @@ public class Kortti {
 		x=x/2;
 	}
 	
+	//lisämuutos
+	
 
 }
