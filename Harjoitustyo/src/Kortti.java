@@ -22,6 +22,11 @@ public class Kortti {
 		x++;
 		x=x+3;
 	}
+	public void teeJotainmuuta() {
+		int x=1;
+		x++;
+		x=x/2;
+	}
 	
 
 }
