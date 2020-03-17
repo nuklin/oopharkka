@@ -9,7 +9,7 @@ package testi;
  *
  * @author jpeant
  */
-public class Intro {
+public class Tekstit {
     public static void Alku(){
         System.out.println("********************************************************");
         System.out.println("Tämä Blackjack-peli on Turun Yliopiston OOP harjoitustyö.");

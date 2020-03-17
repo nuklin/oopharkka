@@ -25,8 +25,9 @@ public class Testi {
         boolean pelaajaHavio = false;
         Scanner lukija = new Scanner(System.in); 
         Scanner intLukija = new Scanner(System.in); // int ja string käyttö samassa lukijassa sekoittaa
+        Scanner valLukija = new Scanner(System.in);
         
-        Intro.Alku();
+        Tekstit.Alku();
         System.out.print("Kerrohan ensin nimesi: ");
         Pelaaja p = new Pelaaja(lukija.nextLine());
         Jakaja j = new Jakaja();
@@ -41,14 +42,13 @@ public class Testi {
             } else {
                 luku = 100;
             }
-            System.out.print("Aseta panos 2 -"+ luku +": ");
+            System.out.print("Aseta panos 2 - "+ luku +": ");
             // Paljonko panostetaan 2 - 100? if raha < 100, max bet on rahatilanne
-            // Korjaa ylisuuri panos!!!!!!!!!
             // Tarkista että jakajalla on enemmän kuin 200.
             int pa = intLukija.nextInt();
-            while(pa>p.RahaTilanne() && pa>2){
-                System.out.println("Sinulla ei ole sellaista määrää.");
-                System.out.print("Aseta panos 2 -"+ luku +": ");
+            while(pa>p.RahaTilanne() || pa<2){
+                System.out.println("Luku ei ole kelvollinen.");
+                System.out.print("Aseta panos 2 - "+ luku +": ");
                 pa=intLukija.nextInt();
             }
             p.asetaPanos(pa);
@@ -59,8 +59,8 @@ public class Testi {
 
             System.out.println();
 
-            while(ottaaLisaa = true){
-            // tähän looppi joka: antaa kortin pelaajalle, näyttää kortit
+            while(true){
+            // looppi joka: antaa kortin pelaajalle, näyttää kortit
             // ja näyttää jakajan kortit. samalla testaa menikö yli!!    
             // kunnes pelaaja Jää.
             // Ässä EI toimi!!!!
@@ -72,13 +72,26 @@ public class Testi {
                     break;
                 }
                 System.out.print("Otatko Lisää (L) vai Jäätkö (J)? ");
-                String valinta = lukija.nextLine();
-                if (valinta.equalsIgnoreCase("J")) {
-                    pelaajaHavio = false;
+         
+                while (true) { // hyväksyy vain L/l tai J/j syötteet.
+                    String in = valLukija.nextLine();
+                    if (in.equalsIgnoreCase("L")) {
+                        ottaaLisaa = true;
+                        break;
+                    } else if (in.equalsIgnoreCase("J")) {
+                        ottaaLisaa = false;
+                        pelaajaHavio = false;
+                        break;
+                    } else {
+                        System.out.print("Ole hyvä ja näppäile joko L tai J:");
+                    }
+                }
+                if (ottaaLisaa == true){
+                    p.LisaaKortti(new Kortti().annaKortti());
+                    System.out.println();
+                } else {
                     break;
                 }
-                p.LisaaKortti(new Kortti().annaKortti());
-                System.out.println();
             }
 
             // seuraava looppi, on jakajan vuoro ottaa kortteja kunnes 17 tai yli
@@ -109,17 +122,17 @@ public class Testi {
 
             // Jatketaanko pelaamista
             System.out.println("");
-            System.out.print("Lopetatko (L) vai Pelataanko (P)? ");
+            System.out.print("Lopetatko (X) vai Pelataanko (U)? ");
             String valinta = lukija.nextLine();
             System.out.println("");
-            if (valinta.equalsIgnoreCase("L")) {
+            if (valinta.equalsIgnoreCase("X")) {
                 break;
             }
         }
         
     
         
-        Intro.loppu(p); 
+        Tekstit.loppu(p); 
         lukija.close();
     }
     
@@ -143,32 +156,52 @@ public class Testi {
         }
     }
     
-    public static void havio(Pelaaja p, Jakaja j){
+    public static void havio(Pelaaja p, Jakaja j, int pArvo1, int jArvo1){
         System.out.println("Voi voi, nyt tuli häviö tässä pelissä.");
-        System.out.println("Sait korttien arvoksi " + p.AnnaArvot2()+".");
-        System.out.println("Ja jakajalla oli "+ j.AnnaArvot2()+".");
+        System.out.println("Sait korttien arvoksi " + pArvo1+".");
+        System.out.println("Ja jakajalla oli "+ jArvo1+".");
+        p.VahennaRahaa(p.kerroPanos());
+        j.LisaaRahaa(p.kerroPanos());
+        System.out.println("Menetit "+p.kerroPanos()+" credittiä.");
+    }
+    
+    public static void voitto(Pelaaja p, Jakaja j){
+        System.out.println(p.annaNimi()+", sinähän voitit. Onneksi olkoon!");
+        j.VahennaRahaa(p.kerroPanos());
+        p.LisaaRahaa(p.kerroPanos());
+        System.out.println(p.kerroPanos()+" credittiä on lisätty tilillesi.");
     }
     
     public static void vertailu(Pelaaja p, Jakaja j){
+        int pArvo1 = p.AnnaArvot();
+        int pArvo2 = p.AnnaArvot2();
+        int jArvo1 = j.AnnaArvot();
+        int jArvo2 = j.AnnaArvot2();
         
-        // vertailu ei toimi niin kuin pitäisi. Menee uusiksi.
-        if(p.AnnaArvot()<22 && p.AnnaArvot()>j.AnnaArvot()
-                || p.AnnaArvot()<22 && p.AnnaArvot() >j.AnnaArvot2()
-                || p.AnnaArvot2()<22 && p.AnnaArvot2() >j.AnnaArvot()
-                || p.AnnaArvot2()<22 && p.AnnaArvot2() >j.AnnaArvot2()
-                || j.AnnaArvot()>21 && j.AnnaArvot2()>21)
-                {
-            System.out.println(p.annaNimi()+", sinähän voitit. Onneksi olkoon!");
-            j.VahennaRahaa(p.kerroPanos());
-            p.LisaaRahaa(p.kerroPanos());
-            System.out.println(p.kerroPanos()+" credittiä on lisätty tilillesi.");
+        if (pArvo1 >21 && pArvo2 <22){
+            pArvo1 = pArvo2;
+        }
+        
+        if (jArvo1 >21 && jArvo2 <22){
+            jArvo1 = jArvo2;
+        }
+
+        // vertailu korjattu. Täytyy tarkastaa.
+        if(pArvo1 > 21){ // häviö jos pelaaja >21
+            havio(p, j, pArvo1, jArvo1);
         } 
-        else if(j.AnnaArvot2()<22 && j.AnnaArvot2() > p.AnnaArvot2() || p.AnnaArvot2()>21){
-            havio(p, j);
-            p.VahennaRahaa(p.kerroPanos());
-            j.LisaaRahaa(p.kerroPanos());
-            System.out.println("Menetit "+p.kerroPanos()+" credittiä.");
-        } else {
+        else if(jArvo1 >21){ //voitto jos jakaja >21
+            voitto(p, j);
+        } 
+        else if (pArvo1 > jArvo1){ // voitto jos pelaajalla isompi luku
+            voitto(p, j);
+        }
+        else if (pArvo1 < jArvo1){ // häviö jos jakajalla isompi luku
+            havio(p, j, pArvo1, jArvo1);
+        }
+        
+        
+        else {
             System.out.println("Tasapeli. Panos on palautettu pelaajalle.");
         }
         
