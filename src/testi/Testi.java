@@ -71,22 +71,8 @@ public class Testi {
                     pelaajaHavio = true;
                     break;
                 }
-                System.out.print("Otatko Lisää (L) vai Jäätkö (J)? ");
-         
-                while (true) { // hyväksyy vain L/l tai J/j syötteet.
-                    String in = valLukija.nextLine();
-                    if (in.equalsIgnoreCase("L")) {
-                        ottaaLisaa = true;
-                        break;
-                    } else if (in.equalsIgnoreCase("J")) {
-                        ottaaLisaa = false;
-                        pelaajaHavio = false;
-                        break;
-                    } else {
-                        System.out.print("Ole hyvä ja näppäile joko L tai J:");
-                    }
-                }
-                if (ottaaLisaa == true){
+                
+                if ((kaksiEhtoKysymys("L", "J", "Otatko lisää (L) vai jäätkö (J)? ")) == true){
                     p.LisaaKortti(new Kortti().annaKortti());
                     System.out.println();
                 } else {
@@ -121,16 +107,10 @@ public class Testi {
             j.tyhjennaKasi();
 
             // Jatketaanko pelaamista
-            System.out.println("");
-            System.out.print("Lopetatko (X) vai Pelataanko (U)? ");
-            String valinta = lukija.nextLine();
-            System.out.println("");
-            if (valinta.equalsIgnoreCase("X")) {
+            if ((kaksiEhtoKysymys("X", "P", "Lopetatko (X) vai Pelataanko (P)? ")) ==true) {
                 break;
-            }
+            }  
         }
-        
-    
         
         Tekstit.loppu(p); 
         lukija.close();
@@ -198,13 +178,36 @@ public class Testi {
         }
         else if (pArvo1 < jArvo1){ // häviö jos jakajalla isompi luku
             havio(p, j, pArvo1, jArvo1);
-        }
-        
-        
-        else {
+        } else {
             System.out.println("Tasapeli. Panos on palautettu pelaajalle.");
         }
         
+    }
+    
+    public static boolean kaksiEhtoKysymys(String y, String n, String kysymys){
+        /* kysyy käyttäjältä kysymyksen ja antaa vastaus vaihtoehdot y ja n
+        *   palauttaa true jos positiviinen vastaus kysymykseen tai false 
+        */
+        Scanner lukija = new Scanner(System.in);
+        boolean palaute;
+        
+        System.out.println("");
+        System.out.print(kysymys);
+        
+        while (true) { // hyväksyy vain y tai n syötteet.
+            String in = lukija.nextLine();
+            if (in.equalsIgnoreCase(y)) {
+                palaute = true;
+                break;
+            } 
+            else if (in.equalsIgnoreCase(n)) {
+                palaute = false;
+                break;
+            } else {
+                System.out.print("Ole hyvä ja näppäile joko "+y+" tai "+n+": ");
+            }
+        }
+        return palaute;
     }
 }
     
