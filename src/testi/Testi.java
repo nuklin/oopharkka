@@ -186,7 +186,7 @@ public class Testi {
     
     public static boolean kaksiEhtoKysymys(String y, String n, String kysymys){
         /* kysyy käyttäjältä kysymyksen ja antaa vastaus vaihtoehdot y ja n
-        *   palauttaa true jos positiviinen vastaus kysymykseen tai false 
+        *   palauttaa true jos positiviinen vastaus kysymykseen tai false.
         */
         Scanner lukija = new Scanner(System.in);
         boolean palaute;
