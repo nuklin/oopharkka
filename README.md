@@ -1,8 +1,8 @@
-# oopharkka
-# testi
+# Turun Yliopiston OOP-kurssin 2020 harjoitustyö
+Authors @jpeant @tumaus @nuutti
 
-@jpeant
-Aja testi.java
+## Ohje
+Aja src/testi testi.java
 
 
 
