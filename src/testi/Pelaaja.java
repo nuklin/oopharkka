@@ -25,7 +25,7 @@ public class Pelaaja {
         } else {
             this.nimi = nimi;
         }
-        this.raha = 100;
+        this.raha = 100;//muuta tätä arvoa jos haluat pelata useampia pelejä alkuperäinen arvo on 100. Arvolla 1000000 pystyy pelaamaan enemmän
     }
     
     public Pelaaja(){
@@ -97,6 +97,9 @@ public class Pelaaja {
 
 class Jakaja extends Pelaaja{
     public Jakaja(){
-        this.raha = 600;
+        this.raha = 600;//laske tätä arvoa, jos haluat jakajan häviävän. Alkuperäinen arvo 600
+    }
+    public int annaJakajanRahat() {
+    	return raha;
     }
 }
