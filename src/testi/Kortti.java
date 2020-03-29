@@ -1,8 +1,4 @@
-/*
- * This work is licensed under a Creative Commons Attribution-NonCommercial 4.0
- * International License by University of Turku, Educational Support Services.
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
- */
+
 package testi;
 import java.util.Random;
 
@@ -10,7 +6,7 @@ import java.util.Random;
  *  
  * @author jpeant
  */
-public class Kortti {
+public class Kortti implements ojenne {
     String[] maat = {"Pata","Hertta","Risti","Ruutu"};
     String[] nimet = {"A","2","3","4","5","6","7","8","9","10","J","Q","K"};
     int arvo;
@@ -23,9 +19,11 @@ public class Kortti {
   	this.valearvo=valearvo;
     }
     
+    
     public Kortti(){
         
     }
+    
     
     public Kortti annaKortti(){
         /*  Arpoo Kortti oliolle (string nimi, int arvo, int valeArvo)
@@ -39,12 +37,13 @@ public class Kortti {
         String n = nimet[ran];
         int arvo = -1;
         int arvo2 = -1;
-
+//muuta if lausekkeiden arvoja jos haluat ässien/kuvakorttien ARVOJEN yleistyvän eli pata 5 voi saada arvoksensa kymmenen jos kohdan * rajaa muutetaan
         if(ran == 0){
             arvo = 11;
             arvo2 = 1;
         }
-        else if(ran >= 1 && ran <= 9){
+        //* Alkuperäinen ran>=1 && ran<=9
+        else if(ran>=1 && ran<=9 ){
             arvo = ran +1;
             arvo2 = arvo;
         } else{
