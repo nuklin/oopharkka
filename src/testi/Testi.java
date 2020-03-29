@@ -160,7 +160,7 @@ public class Testi {
         if(jatkaakotalo) {
         Tekstit.loppu(p);
         } else {
-            taloRahaton(p);
+            Tekstit.taloRahaton(p);
         }
         lukija.close();
     }
