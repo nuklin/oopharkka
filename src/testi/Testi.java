@@ -112,7 +112,7 @@ public class Testi {
                         jakajanKasi(j);
                         TimeUnit.SECONDS.sleep(1);
                     }
-                    if(j.AnnaArvot()>16 && j.AnnaArvot2()>16){
+                    if(j.AnnaArvot()>16 || j.AnnaArvot2()>16){
                         break;
                     }
                 }
