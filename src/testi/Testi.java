@@ -87,6 +87,9 @@ public class Testi {
                 }
                 if (ottaaLisaa == true){
                     p.LisaaKortti(new Kortti().annaKortti());
+                    if(onkobj==true) {
+                    	onkobj=false;
+                    }
                     System.out.println();
                 } else {
                     break;

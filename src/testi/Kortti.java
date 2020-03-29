@@ -44,7 +44,7 @@ public class Kortti implements ojenne {
         }
         //* Alkuperäinen ran>=1 && ran<=9
         else if(ran>=1 && ran<=9 ){
-            arvo = ran +1;
+            arvo = ran+1;
             arvo2 = arvo;
         } else{
             arvo = 10;
