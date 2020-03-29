@@ -104,7 +104,7 @@ public class Testi {
             if(onkobj==false) {
             if(pelaajaHavio == false){
                 while(jakajaLisaa = true){
-                    if(j.AnnaArvot()==21 || j.AnnaArvot2()==21){
+                    if(j.AnnaArvot()==21 && j.AnnaArvot2()==21){
                         break;
                     }
                     if(j.AnnaArvot()<17 || j.AnnaArvot()>21 &&j.AnnaArvot2()<17){
@@ -112,7 +112,7 @@ public class Testi {
                         jakajanKasi(j);
                         TimeUnit.SECONDS.sleep(1);
                     }
-                    if(j.AnnaArvot()>16 || j.AnnaArvot2()>16){
+                    if(j.AnnaArvot()>16 && j.AnnaArvot2()>16){
                         break;
                     }
                 }
