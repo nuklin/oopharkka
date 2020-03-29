@@ -25,4 +25,12 @@ public class Tekstit {
         System.out.println("         ---< Pelaa maltilla - Veikkaus >---");
         System.out.println("********************************************************");
     }
+    
+    public static void taloRahaton(Pelaaja p){
+        System.out.println("********************************************************");
+        System.out.println("      Onnittelut olet tyhjentänyt kasinomme emmekä enää kykene jatkamaan pelaamista");
+        System.out.println(      p.annaNimi()+" sinulla on "+p.RahaTilanne()+" crediittiä");
+        System.out.println("      Voitokasta päivän jatkoa");
+        System.out.println("********************************************************");
+    }
 }
