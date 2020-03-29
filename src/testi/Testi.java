@@ -136,7 +136,7 @@ public class Testi {
             j.tyhjennaKasi();
             //asettaa x:lle arvon nolla, jotta pelaaja voi saada blackjackin uudestaan
             x=0;
-            if(j.annaJakajanRahat()<=100) {
+            if(j.RahaTilanne()<=100) {
             	 jatkaakotalo=false;
             }
 
@@ -160,11 +160,7 @@ public class Testi {
         if(jatkaakotalo) {
         Tekstit.loppu(p);
         } else {
-        	 System.out.println("********************************************************");
-        	System.out.println("      Onnittelut olet tyhjentänyt kasinomme emmekä enää kykene jatkamaan pelaamista");
-        	System.out.println(      p.annaNimi()+" sinulla on "+p.RahaTilanne()+" crediittiä");
-        	System.out.println("      Voitokasta päivän jatkoa");
-        	 System.out.println("********************************************************");
+            taloRahaton(p);
         }
         lukija.close();
     }
