@@ -1,24 +1,14 @@
-/*
- * This work is licensed under a Creative Commons Attribution-NonCommercial 4.0
- * International License by University of Turku, Educational Support Services.
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND.
- */
+
 package testi;
 import java.util.concurrent.TimeUnit;
 import java.util.Random;
 import java.util.Scanner;
 
-/**
- *
- * @author jpeant
- */
 public class Testi {
 
-    /**
-     * @param args the command line arguments
-     */
     
-    public static void main(String[] args) throws InterruptedException {
+    
+    public static void main(String args[]) throws InterruptedException {
         boolean ottaaLisaa = true;
         boolean jakajaLisaa = true;
         boolean jatketaanko = true;
@@ -26,6 +16,9 @@ public class Testi {
         Scanner lukija = new Scanner(System.in); 
         Scanner intLukija = new Scanner(System.in); // int ja string käyttö samassa lukijassa sekoittaa
         Scanner valLukija = new Scanner(System.in);
+        boolean onkobj= false;//käytetään blackjackin tarkastamiseen
+        int x=0;//varmistaa, että blackjackin voi saada vain aloitus kädellä
+        boolean jatkaakotalo=true;//siltä varalta, että talo häviää
         
         Tekstit.Alku();
         System.out.print("Kerrohan ensin nimesi: ");
@@ -60,6 +53,7 @@ public class Testi {
             System.out.println();
 
             while(true){
+            	
             // looppi joka: antaa kortin pelaajalle, näyttää kortit
             // ja näyttää jakajan kortit. samalla testaa menikö yli!!    
             // kunnes pelaaja Jää.
@@ -67,24 +61,47 @@ public class Testi {
 
                 pelaajanKasi(p);
                 jakajanKasi(j);
+                //tarkastaa onko aloitus käden arvo 21
+                if(p.AnnaArvot()==21 && x==0) {
+                	onkobj=true;
+                }
+                x++;//kasvattaa x:ää, että jos käsi saa myöhemmin arvon 21, niin pelaaja ei saa blackjackkia
                 if (p.AnnaArvot()>21 && p.AnnaArvot2()>21){
                     pelaajaHavio = true;
                     break;
                 }
-                
-                if ((kaksiEhtoKysymys("L", "J", "Otatko lisää (L) vai jäätkö (J)? ")) == true){
+                System.out.print("Otatko Lisää (L) vai Jäätkö (J)? ");
+         
+                while (true) { // hyväksyy vain L/l tai J/j syötteet.
+                    String in = valLukija.nextLine();
+                    if (in.equalsIgnoreCase("L")) {
+                        ottaaLisaa = true;
+                        break;
+                    } else if (in.equalsIgnoreCase("J")) {
+                        ottaaLisaa = false;
+                        pelaajaHavio = false;
+                        break;
+                    } else {
+                        System.out.print("Ole hyvä ja näppäile joko L tai J:");
+                    }
+                }
+                if (ottaaLisaa == true){
                     p.LisaaKortti(new Kortti().annaKortti());
                     System.out.println();
                 } else {
                     break;
                 }
             }
+            
+            
 
             // seuraava looppi, on jakajan vuoro ottaa kortteja kunnes 17 tai yli
             // Ässä EI toimi
+            //ylin if lause jättää jakajan vuoron välistä jos pelaajalla on blackjack
+            if(onkobj==false) {
             if(pelaajaHavio == false){
                 while(jakajaLisaa = true){
-                    if(j.AnnaArvot()==21 || j.AnnaArvot2()==21){
+                    if(j.AnnaArvot()==21 && j.AnnaArvot2()==21){
                         break;
                     }
                     if(j.AnnaArvot()<17 || j.AnnaArvot()>21 &&j.AnnaArvot2()<17){
@@ -92,27 +109,60 @@ public class Testi {
                         jakajanKasi(j);
                         TimeUnit.SECONDS.sleep(1);
                     }
-                    if(j.AnnaArvot()>16 || j.AnnaArvot2()>16){
+                    if(j.AnnaArvot()>16 && j.AnnaArvot2()>16){
                         break;
                     }
                 }
             }
+            }
+            //skippaa normaalit loppupölinät, jos pelaajalla blackjack ja siirtyy else haaraan
+            if(onkobj==false) {
 
             // loppuvertailu ja rahojen siirto
             System.out.println("");
             vertailu(p, j);
+            }
+            else {
+            	//kutsuu erillistä blackjack voitto metodia, joka siirtää rahat 3:2 pelaajalle palauttaa onkobj muuttujan arvon falseksi
+            	bjVoitto(p,j);
+            	onkobj=false;
+            }
             
             // tyhjennetään kädet mahdollista seuraavaa peliä varten
             p.tyhjennaKasi();
             j.tyhjennaKasi();
+            //asettaa x:lle arvon nolla, jotta pelaaja voi saada blackjackin uudestaan
+            x=0;
+            if(j.annaJakajanRahat()<=100) {
+            	 jatkaakotalo=false;
+            }
 
             // Jatketaanko pelaamista
-            if ((kaksiEhtoKysymys("X", "P", "Lopetatko (X) vai Pelataanko (P)? ")) ==true) {
+            if(jatkaakotalo) {
+            	
+            
+            System.out.println("");
+            System.out.print("Lopetatko (X) vai Pelataanko (U)? ");
+            String valinta = lukija.nextLine();
+            System.out.println("");
+            if (valinta.equalsIgnoreCase("X")) {
                 break;
-            }  
+            }
+            }else {
+            	break;
+            }
         }
         
-        Tekstit.loppu(p); 
+    
+        if(jatkaakotalo) {
+        Tekstit.loppu(p);
+        } else {
+        	 System.out.println("********************************************************");
+        	System.out.println("      Onnittelut olet tyhjentänyt kasinomme emmekä enää kykene jatkamaan pelaamista");
+        	System.out.println(      p.annaNimi()+" sinulla on "+p.RahaTilanne()+" crediittiä");
+        	System.out.println("      Voitokasta päivän jatkoa");
+        	 System.out.println("********************************************************");
+        }
         lukija.close();
     }
     
@@ -151,6 +201,26 @@ public class Testi {
         p.LisaaRahaa(p.kerroPanos());
         System.out.println(p.kerroPanos()+" credittiä on lisätty tilillesi.");
     }
+    //ottaa pelaajan ja jakajan
+    //tulostaa onnittelut 
+    //kysyy pelaajalta rahat, jos rahojan on parillinen määrä kertoo kolmella ja jakaa kahdella ja lisää ja vähentää ne jakajalta ja pelaajalta
+    //jos rahoja pariton määrä kasvattaa panosta yhdellä, että päästään parilliseen lukuun ja jakaa rahat sitten oikein
+    public static void bjVoitto(Pelaaja p, Jakaja j) {
+    	System.out.println(p.annaNimi()+", sinulla on BlackJack");
+    	int k=p.kerroPanos();
+    	if(k%2==0) {
+    		k=(k*3)/2;
+    		j.VahennaRahaa(k);
+    		p.LisaaRahaa(k);
+    	}else {
+    		k=k+1;
+    		k=(k*3)/2;
+    		j.VahennaRahaa(k);
+    		p.LisaaRahaa(k);
+    		
+    	}
+    	System.out.println(k+" crediittiä on lisätty tilillesi.");
+    }
     
     public static void vertailu(Pelaaja p, Jakaja j){
         int pArvo1 = p.AnnaArvot();
@@ -178,36 +248,15 @@ public class Testi {
         }
         else if (pArvo1 < jArvo1){ // häviö jos jakajalla isompi luku
             havio(p, j, pArvo1, jArvo1);
-        } else {
+        }
+        
+        
+        else {
             System.out.println("Tasapeli. Panos on palautettu pelaajalle.");
         }
         
     }
     
-    public static boolean kaksiEhtoKysymys(String y, String n, String kysymys){
-        /* kysyy käyttäjältä kysymyksen ja antaa vastaus vaihtoehdot y ja n
-        *   palauttaa true jos positiviinen vastaus kysymykseen tai false.
-        */
-        Scanner lukija = new Scanner(System.in);
-        boolean palaute;
-        
-        System.out.println("");
-        System.out.print(kysymys);
-        
-        while (true) { // hyväksyy vain y tai n syötteet.
-            String in = lukija.nextLine();
-            if (in.equalsIgnoreCase(y)) {
-                palaute = true;
-                break;
-            } 
-            else if (in.equalsIgnoreCase(n)) {
-                palaute = false;
-                break;
-            } else {
-                System.out.print("Ole hyvä ja näppäile joko "+y+" tai "+n+": ");
-            }
-        }
-        return palaute;
-    }
 }
+
     
